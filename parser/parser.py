@@ -5,12 +5,53 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import re
 
 
 find_filter_url = 'https://hh.ru/search/vacancy/advanced?hhtmFrom=main'
 find_url = 'https://hh.ru/'
 
 
+def parse_salary(salary_str):
+    if 'Не указано' in salary_str:
+        return {'salary': [None], 'type': None, 'currency': None}
+
+    if ('₽' in salary_str):
+        salary_data = {'currency': 'roubles'}
+
+    if ('$' in salary_str):
+        salary_data = {'currency': 'dollars'}
+
+    if 'до вычета налогов' in salary_str:
+        salary_data['type'] = 'taxes'
+    elif 'на руки' in salary_str:
+        salary_data['type'] = 'hand'
+    else:
+        salary_data['type'] = None
+
+    salary_values = re.findall(r'\d+', salary_str)
+    if len(salary_values) == 0:
+        salary_data['salary'] = [None]
+    elif len(salary_values) == 1:
+        salary_data['salary'] = [int(salary_values[0])]
+    else:
+        salary_data['salary'] = [int(salary_values[0]), int(salary_values[1])]
+
+    return salary_data
+
+
+def parse_experience(exp_str):
+    exp_values = re.findall(r'\d+', exp_str)
+    if len(exp_values) == 0:
+        return [None]
+    return list(map(int, exp_values))
+
+
+def transform_data(data_list):
+    for data in data_list:
+        data['salary'] = parse_salary(data['salary'])
+        data['experience'] = parse_experience(data['experience'])
+    return data_list
 
 
 async def get_html_by_key_words(driver, key_words):
@@ -87,7 +128,7 @@ async def get_more_html_by_key_words(driver, url):
         if (vacancy_salary == None):
             vacancy_salary = 'Не указано'
         else:
-            vacancy_salary = vacancy_salary.get_text().replace('\xa0', ' ').replace('\u202f', ' ')
+            vacancy_salary = vacancy_salary.get_text().replace('\xa0', ' ').replace('\u202f', '').replace('\xa0', ' ').replace('\u202f', '')
 
         vacancy_experience = vacancy.find('span', class_='label--rWRLMsbliNlu_OMkM_D3').get_text()
         vacancy_company = vacancy.find('span', class_='company-info-text--vgvZouLtf8jwBmaD1xgp').get_text().replace('\xa0', ' ').replace('\u202f', ' ')
@@ -97,20 +138,21 @@ async def get_more_html_by_key_words(driver, url):
 
         vacancies_data.append({
             'name': vacancy_name,
-            'salary': vacancy_salary,
-            'experience': vacancy_experience,
+            'salary': parse_salary(vacancy_salary),
+            'experience': parse_experience(vacancy_experience),
             'company': vacancy_company,
 
         })
 
         print({
             'name': vacancy_name,
-            'salary': vacancy_salary,
-            'experience': vacancy_experience,
+            'salary': parse_salary(vacancy_salary),
+            'experience': parse_experience(vacancy_experience),
             'company': vacancy_company,
-            'city': vacancy_city
 
         })
+
+
 
     return {
         'vacancies_data': vacancies_data,
@@ -118,7 +160,24 @@ async def get_more_html_by_key_words(driver, url):
     }
 
 
+#experience = [None]
+#experience = [1, 3]
+#experience = [3, 6]
+#experience = [6]
+
+#salary = { salary: [None], type: 'hand' | 'taxes', currency: roubles, dollars}
+#salary = [100_000]
+#salary = [100_000 - 200_000]
+#salary = [100_000]
 
 
-def get_find_html_filter():
+
+
+#city Москва и тд
+
+
+
+def get_find_html_filter(vacancies, salary, experience, city):
     pass
+
+
