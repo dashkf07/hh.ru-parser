@@ -37,29 +37,17 @@ def filter_vacancies(vacancies, min_salary=None, max_salary=None, min_experience
 
     filtered_vacancies = []
     for vacancy in vacancies:
+        print(vacancy)
         if (matches_salary(vacancy, min_salary, max_salary) and
                 matches_experience(vacancy, min_experience, max_experience) and
                 matches_company(vacancy, company) and
                 matches_city(vacancy, city)):
+            print('ПОДОШЛО')
+            print(vacancy)
             filtered_vacancies.append(vacancy)
     return filtered_vacancies
 
-# Пример использования
-vacancies = [
-    {'name': 'Java-разработчик', 'salary': {'currency': 'roubles', 'type': 'hand', 'salary': [100000]}, 'experience': [None], 'company': 'Oxytocin', 'city': 'Москва'},
-    {'name': 'Middle java developer', 'salary': {'salary': [None], 'type': None, 'currency': None}, 'experience': [1, 3], 'company': 'БКС IT & Digital', 'city': 'Москва'},
-    {'name': 'Senior Java Developer', 'salary': {'salary': [None], 'type': None, 'currency': None}, 'experience': [6, 9999], 'company': 'Газпромбанк', 'city': 'Москва'},
-    {'name': 'Стажер-разработчик Java', 'salary': {'salary': [None], 'type': None, 'currency': None}, 'experience': [None], 'company': 'Mediascope', 'city': 'Москва'},
-    {'name': 'Java разработчик (Middle+)', 'salary': {'salary': [None], 'type': None, 'currency': None}, 'experience': [3, 6], 'company': 'Девелоника', 'city': 'Москва'},
-    {'name': 'Java-разработчик (middle+)', 'salary': {'currency': 'roubles', 'type': 'hand', 'salary': [250000]}, 'experience': [3, 6], 'company': 'CORE', 'city': 'Москва'},
-    {'name': 'Junior Java Developer', 'salary': {'salary': [None], 'type': None, 'currency': None}, 'experience': [1, 3], 'company': 'ООО 1221Системс', 'city': 'Москва'},
-    {'name': 'Backend-разработчик Java/Kotlin', 'salary': {'currency': 'roubles', 'type': 'hand', 'salary': [230000, 300000]}, 'experience': [1, 3], 'company': 'МФТИ', 'city': 'Москва'},
-    {'name': 'Java Developer-программист/стажер', 'salary': {'currency': 'roubles', 'type': 'taxes', 'salary': [70000, 80000]}, 'experience': [None], 'company': 'Aston', 'city': 'Москва'},
-    {'name': 'Java-разработчик (middle+/ senior)', 'salary': {'salary': [None], 'type': None, 'currency': None}, 'experience': [3, 6], 'company': 'Сбер для экспертов', 'city': 'Москва'}
-]
 
-# Пример фильтрации
-filtered = filter_vacancies(vacancies, min_experience=6, max_experience=999 )
-for vacancy in filtered:
-    print(vacancy)
+
+
 

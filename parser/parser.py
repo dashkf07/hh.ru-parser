@@ -36,6 +36,7 @@ def parse_salary(salary_str):
         salary_data['salary'] = [int(salary_values[0])]
     else:
         salary_data['salary'] = [int(salary_values[0]), int(salary_values[1])]
+    salary_data['salary'] = salary_data['salary'].sort()
 
     return salary_data
 
@@ -55,9 +56,8 @@ def transform_data(data_list):
 
 
 async def get_html_by_key_words(driver, key_words):
-
     # page
-    driver.get(find_url)
+    driver.get('https://hh.ru/')
 
     # get input element
     inp = driver.find_element(By.NAME, 'text')
@@ -93,9 +93,10 @@ async def get_html_by_key_words(driver, key_words):
 
         vacancies_data.append({
             'name': vacancy_name,
-            'salary': vacancy_salary,
-            'experience': vacancy_experience,
+            'salary': parse_salary(vacancy_salary),
+            'experience': parse_experience(vacancy_experience),
             'company': vacancy_company,
+            'city': vacancy_city
 
         })
 
@@ -159,25 +160,5 @@ async def get_more_html_by_key_words(driver, url):
         'url': driver.current_url
     }
 
-
-#experience = [None]
-#experience = [1, 3]
-#experience = [3, 6]
-#experience = [6]
-
-#salary = { salary: [None], type: 'hand' | 'taxes', currency: roubles, dollars}
-#salary = [100_000]
-#salary = [100_000 - 200_000]
-#salary = [100_000]
-
-
-
-
-#city Москва и тд
-
-
-
-def get_find_html_filter(vacancies, salary, experience, city):
-    pass
 
 
