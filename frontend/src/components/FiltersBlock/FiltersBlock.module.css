@@ -1,0 +1,67 @@
+/* FiltersBlock.module.css */
+.filtersBlock {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.filterSection {
+    margin-bottom: 20px;
+}
+
+.filterTitle {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.salaryRange, .experienceOptions {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputSalary, .inputCompany, .inputCity {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.experienceOption {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.experienceOption p {
+    margin-left: 8px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.experienceOption input {
+    cursor: pointer;
+}
+
+.inputSalary:focus, .inputCompany:focus, .inputCity:focus {
+    border-color: #0073e6;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 115, 230, 0.5);
+}
+
+
+.button {
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 16px;
+}
