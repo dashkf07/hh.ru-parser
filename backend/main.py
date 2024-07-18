@@ -9,12 +9,16 @@ app = FastAPI(
 
 )
 origins = [
-    "*"
+    "*",
+    'http://195.135.212.242',
+    'http://195.135.212.242:3000',
+    'http://195.135.212.242/',
+    'http://195.135.212.242:3000/'
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
